@@ -1,0 +1,644 @@
+#+TITLE: Yuki's Emacs Configuration
+
+Heavily based on [[https://github.com/hrs/dotfiles][hrs/dotfiles]] and migrated from my personal old emacs init
+scripts :)
+
+* Use sensible-defaults.el
+
+  Use sensible-defaults.el for some basic settings
+
+  #+BEGIN_SRC emacs-lisp
+    (load-file "~/.emacs.d/sensible-defaults/sensible-defaults.el")
+    (sensible-defaults/use-all-settings)
+    (sensible-defaults/use-all-keybindings)
+    (sensible-defaults/backup-to-temp-directory)
+  #+END_SRC
+
+* Configure =use-package=
+
+  After hassling of req-package, I decided to use use-package instead.
+
+  #+BEGIN_SRC emacs-lisp
+    (unless (package-installed-p 'use-package)
+      (package-install 'use-package))
+
+    (setq use-package-verbose t)
+    (setq use-package-always-ensure t)
+
+    (require 'use-package)
+  #+END_SRC
+
+  Compile all the things!
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package auto-compile
+      :config (auto-compile-on-load-mode))
+    (setq load-prefer-newer t)
+  #+END_SRC
+
+* =whoami=
+
+  #+BEGIN_SRC emacs-lisp
+    (setq user-full-name "Muhammad Kaisar Arkhan"
+          user-mail-address "yuki@coala.io")
+  #+END_SRC
+
+* Quirks
+** PATH
+
+   I'm lazy to copy paste my =PATH= variable from ~/.$SHELL to ~/.xprofile and
+   on some platforms that won't work.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package exec-path-from-shell
+       :config
+       (exec-path-from-shell-initialize)
+       (exec-path-from-shell-copy-env "GOPATH"))
+   #+END_SRC
+
+** Just use =seamonkey=
+
+   #+BEGIN_SRC emacs-lisp
+     (setenv "BROWSER" "seamonkey")
+   #+END_SRC
+
+* UI preferences
+** Distract-free
+
+   I find the toolbars, menubars, and all of the other crap distracting. Be gone!
+
+   #+BEGIN_SRC emacs-lisp
+     (tool-bar-mode 0)
+     (menu-bar-mode 0)
+     (when window-system
+       (scroll-bar-mode -1))
+   #+END_SRC
+
+** Font
+
+   I really like Go Mono, I find them to be quite readable even on small text.
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'default-frame-alist '(font . "Go Mono-9"))
+     (set-face-attribute 'default t :font "Go Mono-9")
+   #+END_SRC
+
+** Text editing
+
+   I need my column number and I need hl-line to see where my cursor at.
+   #justyukithings
+
+   #+BEGIN_SRC emacs-lisp
+     (global-hl-line-mode 1)
+     (column-number-mode 1)
+   #+END_SRC
+
+** Theme
+
+   I really like dark themes (I have pretty bad eye sight) but most of them have
+   terrible color schemes.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package zenburn-theme
+       :config
+       (load-theme 'zenburn))
+   #+END_SRC
+
+** Mode-line
+
+   I want my mode line to fit nicely and easy to look.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package smart-mode-line
+       :config
+       (setq sml/theme 'respectful
+             sml/shorten-directory t
+             sml/shorten-modes t
+             sml/name-width 40
+             sml/mode-width 'full
+             sml/no-confirm-load-theme t)
+       (smart-mode-line-enable))
+   #+END_SRC
+
+** =ido=
+
+   #+BEGIN_SRC emacs-lisp
+     (setq ido-enable-flex-matching t)
+     (setq ido-everywhere t)
+     (ido-mode 1)
+     ;(setq ido-create-new-buffer 'always)
+     ;(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+
+     ;(use-package ido-vertical-mode
+     ;  :config (ido-vertical-mode 1))
+
+     (use-package ido-completing-read+)
+
+     (use-package flx-ido
+       :config (flx-ido-mode 1))
+   #+END_SRC
+
+** =smex=
+
+   I prefer TAB for completion, I don't like how =helm= works and it distracts
+   my muscle memory.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package smex
+       :bind (("M-x" . smex)
+              ("M-X" . smex-major-mode-commands)))
+   #+END_SRC
+
+** Tabs!
+
+   I like tabs and I know a lot of people hate tabs but I like tabs so I use tabs
+   in this tab-less text editors because I like tabs :)
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package tabbar)
+
+     (use-package tabbar-ruler
+       :bind
+       ("C-q" . tabbar-ruler-move)
+       :init
+       (setq tabbar-ruler-global-tabbar t)
+       (require 'tabbar-ruler)
+       :config
+       (setq tabbar-buffer-groups-function
+             'tabbar-ruler-projectile-tabbar-buffer-groups))
+
+   #+END_SRC
+
+** =which-key=
+
+   I sometimes forget which key to use for things, so which-key is really
+   helpful.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package which-key
+       :config
+       (which-key-setup-minibuffer)
+       (which-key-mode 1))
+   #+END_SRC
+
+* Editing settings
+** Whitespace be gone!
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package whitespace-cleanup-mode
+       :config (global-whitespace-cleanup-mode 1))
+   #+END_SRC
+
+** Undo tree
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :config (global-undo-tree-mode 1))
+   #+END_SRC
+
+** Switch and rebalance windows when splitting
+
+   #+BEGIN_SRC emacs-lisp
+     (defun yuki/split-window-below-and-switch ()
+       "Split the window horizontally, then switch to the new pane."
+       (interactive)
+       (split-window-below)
+       (balance-windows)
+       (other-window 1))
+
+     (defun yuki/split-window-right-and-switch ()
+       "Split the window vertically, then switch to the new pane."
+       (interactive)
+       (split-window-right)
+       (balance-windows)
+       (other-window 1))
+
+     (global-set-key (kbd "C-x 2") 'yuki/split-window-below-and-switch)
+     (global-set-key (kbd "C-x 3") 'yuki/split-window-right-and-switch)
+   #+END_SRC
+
+* Programming settings
+** The bear essentials
+*** Projectile
+
+    I really love projectile, I just love it to bits. It makes stuff like tabbar
+    and other misc stuff awesome :3
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package projectile
+        :config
+        (projectile-mode 1))
+    #+END_SRC
+
+*** =auto-complete=
+
+    I prefer =auto-complete= more than =company= because it just works. While
+    company (from my experience) requires a lot stuff to be configured just to
+    make it work.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package auto-complete
+        :config
+        (ac-config-default))
+    #+END_SRC
+
+*** =flycheck=
+
+    Just =flycheck=, nothing special.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+        :config
+        (global-flycheck-mode 1))
+    #+END_SRC
+
+*** Magit
+
+    Magit is AWESOME. I use it a lot more than =git= itself.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package magit
+        :bind ("C-c C-z" . magit-status))
+    #+END_SRC
+
+*** Origami
+
+    Origami is basically org-style code folding, which is nice.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package origami
+        :bind ("C-." . origami-toggle-node)
+        :config
+        (global-origami-mode 1))
+    #+END_SRC
+
+*** Smart Parentheses
+
+    I don't like having to close my parenthese manually, especially when
+    programming in Lisp.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package smartparens
+        :config (smartparens-global-mode 1))
+    #+END_SRC
+
+*** Highlight Parentheses
+
+    I need it to be highlighted so I know which parentheses closes which. Also,
+    Lisp.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package highlight-parentheses
+        :config (global-highlight-parentheses-mode 1))
+    #+END_SRC
+
+*** No =TAB= allowed
+
+    =TAB=s sucks. I really hate looking at them when using the terminal.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq-default indent-tabs-mode nil)
+    #+END_SRC
+
+** Python
+
+   I use Python daily now (Thanks coala!) and this setup is pretty basic but it
+   does the job.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package virtualenvwrapper
+       :init (setq venv-location "~/.virtualenvs")
+       :config
+       (venv-initialize-interactive-shells)
+       (venv-initialize-eshell))
+
+     (use-package jedi
+       :config
+       (setq jedi:setup-keys t)
+       (setq jedi:complete-on-dot t)
+       (add-hook 'python-mode-hook
+                 (lambda ()
+                   (jedi:setup)
+                   (jedi:ac-setup))))
+   #+END_SRC
+
+** Go
+
+   Nothing special here, just the usual go mode with autocomplete
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package go-mode)
+     (use-package go-autocomplete)
+   #+END_SRC
+
+** Haskell
+
+   Well, other than =intero=, there's really nothing special about this as well
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package haskell-mode)
+
+     (use-package intero
+       :config (add-hook 'haskell-mode-hook 'intero-mode))
+   #+END_SRC
+
+** Lisp
+*** Scheme
+
+   Just geiser, /shrug/
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package geiser)
+   #+END_SRC
+
+*** Common Lisp
+
+    Well, Common Lisp is a guilty pleasure of mine ;)
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package slime
+        :config
+        (setq inferior-lisp-program "/usr/bin/sbcl")
+        (setq slime-contribs '(slime-fancy)))
+    #+END_SRC
+
+** Web
+
+   I don't do web development that much but sometimes I do for stuff like fixing
+   broken templates or little amount of repairs.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package web-mode
+       :mode
+       (("\\.phtml\\'" . web-mode)
+        ("\\.tpl\\.php\\'" . web-mode)
+        ("\\.[agj]sp\\'" . web-mode)
+        ("\\.erb\\'" . web-mode)
+        ("\\.mustache\\'" . web-mode)
+        ("\\.djhtml\\'" . web-mode)
+        ("\\.html?\\'" . web-mode)))
+   #+END_SRC
+
+** Ruby
+
+   I don't code Ruby that much anymore but I still have it setup just in case I go
+   back to it.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package robe
+       :config
+       (add-hook 'ruby-mode-hook 'robe-mode)
+       (add-hook 'robe-mode-hook 'ac-robe-setup))
+
+     (use-package rubocop
+       :config (add-hook 'ruby-mode-hook 'rubocop-mode))
+   #+END_SRC
+
+** C/C++
+
+   Just stuff that I use when programming in C. I rarely do C++ (because it sucks,
+   IMO). Irony is pretty great.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package irony
+       :init
+       (defun my-irony-hook ()
+         (add-to-list 'ac-sources 'ac-source-irony))
+       (add-hook 'irony-mode-hook 'my-irony-hook)
+       :config
+       (add-hook 'c-mode-hook 'irony-mode)
+       (add-hook 'c++-mode-hook 'irony-mode))
+
+     (use-package flycheck-irony)
+   #+END_SRC
+
+** Dockerfile
+
+   Nothing special, just =dockerfile-mode=
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package dockerfile-mode)
+   #+END_SRC
+
+** YAML
+   Just =yaml-mode=
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package yaml-mode)
+   #+END_SRC
+
+* Writing
+** AsciiDoc
+
+   I like AsciiDoc, but I think =org-mode= is slowly replacing  do you mean not all =txt= files =adoc= files?!
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package adoc-mode
+       :mode
+       (("\\.adoc\\'" . adoc-mode)
+        ("\\.asciidoc\\'" . adoc-mode)))
+   #+END_SRC
+
+** Markdown
+
+   I seriously hate markdown but I'm forced to use it because a lot of people
+   like it. Whatever I guess.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package markdown-mode
+       :mode
+       (("\\.md\\'" . markdown-mode)
+        ("\\.markdown\\'" . markdown-mode)))
+   #+END_SRC
+
+* All things =org=
+** Make =code= pretty
+
+   I don't like looking at my code on org without pretty highlights.
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-src-fontify-natively t)
+   #+END_SRC
+
+** IPython
+
+   I like IPython and I want to use it with =org-mode=.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ob-ipython)
+   #+END_SRC
+
+** Bullets
+
+   I just like them.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :config
+       (add-hook 'org-mode-hook
+                 (lambda ()
+                   (org-bullets-mode t))))
+   #+END_SRC
+
+** Ellipsis
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-ellipsis "⤵")
+   #+END_SRC
+
+** Use the same window when editing code
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-src-window-setup 'current-window)
+   #+END_SRC
+
+** Enable spell checking in org
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook 'flyspell-mode)
+   #+END_SRC
+
+** Make TABs native in code
+
+   #+BEGIN_SRC emacs-lisp
+     (setq org-src-tab-acts-natively t)
+   #+END_SRC
+
+** Exports
+
+   #+BEGIN_SRC emacs-lisp
+     (require 'ox-beamer)
+     (require 'ox-md)
+   #+END_SRC
+
+** Task management
+*** Setup directories
+
+    I store my org files in =~/org= and have that sync with Syncthing to my other
+    machines and Android Phone. Finished tasks goes to =~/org/archive.org=.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-directory "~/org")
+
+      (defun org-file-path (filename)
+        "Return the absolute address of an org file, given its relative name."
+        (concat (file-name-as-directory org-directory) filename))
+
+      (setq org-index-file (org-file-path "index.org"))
+      (setq org-archive-location
+            (concat (org-file-path "archive.org") "::* From %s"))
+    #+END_SRC
+
+    TODOs goes to index.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-agenda-files (list org-index-file))
+    #+END_SRC
+
+    Archive TODO when done.
+
+    #+BEGIN_SRC emacs-lisp
+      (defun yuki/mark-done-and-archive ()
+        "Mark the state of an org-mode item as DONE and archive it."
+        (interactive)
+        (org-todo 'done)
+        (org-archive-subtree))
+
+      (define-key org-mode-map (kbd "C-c C-x C-s") 'yuki/mark-done-and-archive)
+    #+END_SRC
+
+    Record the time that a TODO was archived.
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-log-done 'time)
+    #+END_SRC
+
+*** Capture templates
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-capture-templates
+            '(("t" "Todo"
+               entry
+               (file+headline org-index-file "Inbox")
+               "* TODO %?\n  CREATED: %u\n")
+
+              ("w" "Anime to watch"
+               entry
+               (file (org-file-path "to-watch.org")))
+
+              ("f" "Finished anime"
+               table-line (file (org-file-path "finished.org")))))
+    #+END_SRC
+
+*** Keybindings
+
+    #+BEGIN_SRC emacs-lisp
+      (define-key global-map "\C-cl" 'org-store-link)
+      (define-key global-map "\C-ca" 'org-agenda)
+      (define-key global-map "\C-cc" 'org-capture)
+    #+END_SRC
+
+    Open TODO list
+
+    #+BEGIN_SRC emacs-lisp
+      (defun open-index-file ()
+        "Open the master org TODO list."
+        (interactive)
+        (find-file org-index-file)
+        (flycheck-mode -1)
+        (end-of-buffer))
+
+      (global-set-key (kbd "C-c i") 'open-index-file)
+    #+END_SRC
+
+    Capture TODO
+
+    #+BEGIN_SRC emacs-lisp
+      (defun org-capture-todo ()
+        (interactive)
+        (org-capture :keys "t"))
+
+      (global-set-key (kbd "M-n") 'org-capture-todo)
+    #+END_SRC
+
+** Exporting
+*** HTML
+
+    Don't publish my contact information
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-html-postamble nil)
+    #+END_SRC
+
+*** PDF
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-latex-pdf-process
+            '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+      (add-to-list 'org-latex-packages-alist '("" "minted"))
+      (setq org-latex-listings 'minted)
+    #+END_SRC
+
+* Terminal
+
+  #+BEGIN_SRC emacs-lisp
+    (defun yuki/term-paste (&optional string)
+      (interactive)
+      (process-send-string
+       (get-buffer-process (current-buffer))
+       (if string string (current-kill 0))))
+
+    (use-package multi-term
+      :bind ("C-c t" . multi-term)
+      :config
+      (setq multi-term-program-switches "--login")
+      (add-hook 'term-mode-hook
+                (lambda ()
+                  (goto-address-mode)
+                  (define-key term-raw-map (kbd "C-y") 'yuki/term-paste)
+                  (define-key term-raw-map (kbd "<mouse-2>") 'yuki/term-paste)
+                  (define-key term-raw-map (kbd "M-o") 'other-window))))
+  #+END_SRC

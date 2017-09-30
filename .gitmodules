@@ -1,0 +1,3 @@
+[submodule "sensible-defaults.el"]
+	path = sensible-defaults.el
+	url = https://github.com/hrs/sensible-defaults.el
