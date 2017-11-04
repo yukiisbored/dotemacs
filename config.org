@@ -226,6 +226,12 @@ scripts :)
      (global-set-key (kbd "C-x 3") 'yuki/split-window-right-and-switch)
    #+END_SRC
 
+** Rainbow Mode
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package rainbow-mode)
+   #+END_SRC
+
 * Programming settings
 ** The bear essentials
 *** Projectile
