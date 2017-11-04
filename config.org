@@ -115,33 +115,47 @@ scripts :)
        (smart-mode-line-enable))
    #+END_SRC
 
-** =ido=
+** Ivy
+
+   I find smex+ido to be quite annoying. I don't like having it trying to
+   predict more than why I type.
 
    #+BEGIN_SRC emacs-lisp
-     (setq ido-enable-flex-matching t)
-     (setq ido-everywhere t)
-     (ido-mode 1)
-     ;(setq ido-create-new-buffer 'always)
-     ;(setq ido-vertical-define-keys 'C-n-and-C-p-only)
-
-     ;(use-package ido-vertical-mode
-     ;  :config (ido-vertical-mode 1))
-
-     (use-package ido-completing-read+)
-
-     (use-package flx-ido
-       :config (flx-ido-mode 1))
+     (use-package ivy
+       :bind
+       ("C-c C-r" . ivy-resume)
+       ("<f6>" . ivy-resume)
+       :config
+       (ivy-mode 1)
+       (setq ivy-use-virtual-buffers t)
+       (setq enable-recursive-minibuffers t))
    #+END_SRC
 
-** =smex=
-
-   I prefer TAB for completion, I don't like how =helm= works and it distracts
-   my muscle memory.
+** Swiper
 
    #+BEGIN_SRC emacs-lisp
-     (use-package smex
-       :bind (("M-x" . smex)
-              ("M-X" . smex-major-mode-commands)))
+     (use-package swiper
+       :bind
+       ("C-s" . swiper))
+   #+END_SRC
+
+** Counsel
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package counsel
+       :bind
+       ("M-x" . counsel-M-x)
+       ("C-x C-f" . counsel-find-file)
+       ("<f1> f" . counsel-describe-function)
+       ("<f2> v" . counsel-describe-variable)
+       ("<f1> l" . counsel-find-library)
+       ("<f1> i" . counsel-info-lookup-symbol)
+       ("<f2> u" . counsel-unicode-char)
+       ("C-c g" . counsel-git)
+       ("C-c j" . counsel-git-grep)
+       ("C-c l" . counsel-locate)
+       :config
+       (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
    #+END_SRC
 
 ** Tabs!
