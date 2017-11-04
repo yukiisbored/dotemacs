@@ -367,7 +367,7 @@ scripts :)
     #+BEGIN_SRC emacs-lisp
       (use-package slime
         :config
-        (setq inferior-lisp-program "/usr/bin/sbcl")
+        (setq inferior-lisp-program "sbcl")
         (setq slime-contribs '(slime-fancy)))
     #+END_SRC
 
