@@ -73,6 +73,11 @@ scripts :)
      (menu-bar-mode 0)
      (when window-system
        (scroll-bar-mode -1))
+     (defun yuki/disable-scroll-bars (frame)
+       (modify-frame-parameters frame
+                                '((vertical-scroll-bars . nil)
+                                  (horizontal-scroll-bars . nil))))
+     (add-hook 'after-make-frame-functions 'yuki/disable-scroll-bars)
    #+END_SRC
 
 ** Font
