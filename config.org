@@ -94,17 +94,6 @@ scripts :)
      (column-number-mode 1)
    #+END_SRC
 
-** Theme
-
-   I really like dark themes (I have pretty bad eye sight) but most of them have
-   terrible color schemes.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package zenburn-theme
-       :config
-       (load-theme 'zenburn))
-   #+END_SRC
-
 ** Mode-line
 
    I want my mode line to fit nicely and easy to look.
