@@ -609,7 +609,11 @@ scripts :)
 
       (global-set-key (kbd "M-n") 'org-capture-todo)
     #+END_SRC
+** Alphabetical list
 
+   #+BEGIN_SRC emacs-lisp
+     (setq org-list-allow-alphabetical t)
+   #+END_SRC
 ** Exporting
 *** HTML
 
