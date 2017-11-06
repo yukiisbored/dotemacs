@@ -154,6 +154,7 @@ scripts :)
        ("C-c g" . counsel-git)
        ("C-c j" . counsel-git-grep)
        ("C-c l" . counsel-locate)
+       ("C-c k" . counsel-ag)
        :config
        (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
    #+END_SRC
@@ -232,6 +233,15 @@ scripts :)
      (use-package rainbow-mode)
    #+END_SRC
 
+** The almighty silver searcher
+
+   I always wanted a better code finder rather than just git grep everything :P
+
+   We're going to use Counsel with ag.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ag)
+   #+END_SRC
 * Programming settings
 ** The bear essentials
 *** Projectile
