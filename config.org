@@ -464,10 +464,21 @@ scripts :)
    #+END_SRC
 
 ** YAML
+
+
    Just =yaml-mode=
 
    #+BEGIN_SRC emacs-lisp
      (use-package yaml-mode)
+   #+END_SRC
+
+** Elixir
+
+   I like Elixir and looking forward to use it <3
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package alchemist)
+     (use-package ac-alchemist)
    #+END_SRC
 
 * Writing
