@@ -680,17 +680,14 @@ scripts :)
       (setq org-latex-listings 'minted)
     #+END_SRC
 
-** Classes
-   #+BEGIN_SRC emacs-lisp
-     (with-eval-after-load "ox-latex"
-       (add-to-list 'org-latex-classes
-                    '("koma-article" "\\documentclass{scrartcl}"
-                      ("\\section{%s}" . "\\section*{%s}")
-                      ("\\subsection{%s}" . "\\subsection*{%s}")
-                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-   #+END_SRC
+*** Reveal
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ox-reveal
+        :config
+        (setq org-reveal-root "file:///home/yuki/.local/share/reveal"))
+    #+END_SRC
+
 * Terminal
 
   #+BEGIN_SRC emacs-lisp
