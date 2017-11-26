@@ -669,24 +669,3 @@ scripts :)
         :config
         (setq org-reveal-root "file:///home/yuki/.local/share/reveal"))
     #+END_SRC
-
-* Terminal
-
-  #+BEGIN_SRC emacs-lisp
-    (defun yuki/term-paste (&optional string)
-      (interactive)
-      (process-send-string
-       (get-buffer-process (current-buffer))
-       (if string string (current-kill 0))))
-
-    (use-package multi-term
-      :bind ("C-c t" . multi-term)
-      :config
-      (setq multi-term-program-switches "--login")
-      (add-hook 'term-mode-hook
-                (lambda ()
-                  (goto-address-mode)
-                  (define-key term-raw-map (kbd "C-y") 'yuki/term-paste)
-                  (define-key term-raw-map (kbd "<mouse-2>") 'yuki/term-paste)
-                  (define-key term-raw-map (kbd "M-o") 'other-window))))
-  #+END_SRC
