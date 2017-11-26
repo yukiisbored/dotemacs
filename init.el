@@ -13,4 +13,6 @@
 (setq custom-file my-custom-file)
 (load custom-file 'noerr)
 
+(setq load-prefer-newer t)
+
 (org-babel-load-file "~/.emacs.d/config.org")
