@@ -544,6 +544,7 @@ scripts :)
    #+BEGIN_SRC emacs-lisp
      (require 'ox-beamer)
      (require 'ox-md)
+     (require 'ox-html)
    #+END_SRC
 
 ** Task management
