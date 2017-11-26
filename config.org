@@ -44,25 +44,6 @@ scripts :)
           user-mail-address "yuki@coala.io")
   #+END_SRC
 
-* Quirks
-** PATH
-
-   I'm lazy to copy paste my =PATH= variable from ~/.$SHELL to ~/.xprofile and
-   on some platforms that won't work.
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package exec-path-from-shell
-       :config
-       (exec-path-from-shell-initialize)
-       (exec-path-from-shell-copy-env "GOPATH"))
-   #+END_SRC
-
-** Just use =seamonkey=
-
-   #+BEGIN_SRC emacs-lisp
-     (setenv "BROWSER" "seamonkey")
-   #+END_SRC
-
 * UI preferences
 ** Distract-free
 
