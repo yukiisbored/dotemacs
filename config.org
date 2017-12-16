@@ -140,26 +140,6 @@ scripts :)
        (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
    #+END_SRC
 
-** Tabs!
-
-   I like tabs and I know a lot of people hate tabs but I like tabs so I use tabs
-   in this tab-less text editors because I like tabs :)
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package tabbar)
-
-     (use-package tabbar-ruler
-       :bind
-       ("C-q" . tabbar-ruler-move)
-       :init
-       (setq tabbar-ruler-global-tabbar t)
-       (require 'tabbar-ruler)
-       :config
-       (setq tabbar-buffer-groups-function
-             'tabbar-ruler-projectile-tabbar-buffer-groups))
-
-   #+END_SRC
-
 ** =which-key=
 
    I sometimes forget which key to use for things, so which-key is really
