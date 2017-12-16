@@ -152,6 +152,23 @@ scripts :)
        (which-key-mode 1))
    #+END_SRC
 
+** IBuffer
+
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+
+     (use-package ibuffer-projectile
+       :config
+       (defun yuki/ibuffer-projectile ()
+         (ibuffer-projectile-set-filter-groups)
+           (unless (eq ibuffer-sorting-mode 'alphabetic)
+             (ibuffer-do-sort-by-alphabetic)))
+       (add-hook 'ibuffer-hook 'yuki/ibuffer-projectile))
+
+     (use-package ibuffer-git)
+   #+END_SRC
+
 ** Zoom
 
    #+BEGIN_SRC emacs-lisp
