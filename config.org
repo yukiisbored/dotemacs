@@ -152,6 +152,13 @@ scripts :)
        (which-key-mode 1))
    #+END_SRC
 
+** Zoom
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package zoom
+       :config
+       (zoom-mode 1))
+   #+END_SRC
 * Editing settings
 ** Whitespace be gone!
 
@@ -165,27 +172,6 @@ scripts :)
    #+BEGIN_SRC emacs-lisp
      (use-package undo-tree
        :config (global-undo-tree-mode 1))
-   #+END_SRC
-
-** Switch and rebalance windows when splitting
-
-   #+BEGIN_SRC emacs-lisp
-     (defun yuki/split-window-below-and-switch ()
-       "Split the window horizontally, then switch to the new pane."
-       (interactive)
-       (split-window-below)
-       (balance-windows)
-       (other-window 1))
-
-     (defun yuki/split-window-right-and-switch ()
-       "Split the window vertically, then switch to the new pane."
-       (interactive)
-       (split-window-right)
-       (balance-windows)
-       (other-window 1))
-
-     (global-set-key (kbd "C-x 2") 'yuki/split-window-below-and-switch)
-     (global-set-key (kbd "C-x 3") 'yuki/split-window-right-and-switch)
    #+END_SRC
 
 ** Rainbow Mode
