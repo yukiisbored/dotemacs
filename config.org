@@ -189,6 +189,18 @@ scripts :)
        ("C-TAB" . sr-speedbar-toggle))
    #+END_SRC
 
+** Dashboard
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package dashboard
+       :init
+       (setq dashboard-startup-banner "~/.emacs.d/banner.png")
+       (setq dashboard-banner-logo-title "Hello Yuki, Welcome to GNU Emacs!")
+       (setq initial-buffer-choice '(lambda () (get-buffer "*dashboard*")))
+       :config
+       (dashboard-setup-startup-hook))
+   #+END_SRC
+
 * Editing settings
 ** Whitespace be gone!
 
