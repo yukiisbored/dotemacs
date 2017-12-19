@@ -447,6 +447,11 @@ scripts :)
      (use-package ac-alchemist)
    #+END_SRC
 
+** Jinja2
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package jinja2-mode)
+   #+END_SRC
 * Writing
 ** AsciiDoc
 
