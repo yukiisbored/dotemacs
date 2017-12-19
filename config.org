@@ -506,12 +506,6 @@ scripts :)
      (setq org-ellipsis "⤵")
    #+END_SRC
 
-** Use the same window when editing code
-
-   #+BEGIN_SRC emacs-lisp
-     (setq org-src-window-setup 'current-window)
-   #+END_SRC
-
 ** Enable spell checking in org
 
    #+BEGIN_SRC emacs-lisp
