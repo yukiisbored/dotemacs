@@ -231,6 +231,15 @@ scripts :)
    #+BEGIN_SRC emacs-lisp
      (use-package ag)
    #+END_SRC
+
+** Beacon
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package beacon
+       :config
+       (beacon-mode 1))
+   #+END_SRC
+
 * Programming settings
 ** The bear essentials
 *** Projectile
