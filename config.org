@@ -173,6 +173,8 @@ scripts :)
 
    #+BEGIN_SRC emacs-lisp
      (use-package zoom
+       :init
+       (setq zoom-size '(0.618 . 0.618))
        :config
        (zoom-mode 1))
    #+END_SRC
