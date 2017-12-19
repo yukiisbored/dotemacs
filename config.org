@@ -41,7 +41,7 @@ scripts :)
 
   #+BEGIN_SRC emacs-lisp
     (setq user-full-name "Muhammad Kaisar Arkhan"
-          user-mail-address "yuki@coala.io")
+          user-mail-address "yukiisbored@disroot.org")
   #+END_SRC
 
 * UI preferences
