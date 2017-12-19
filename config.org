@@ -178,6 +178,17 @@ scripts :)
        :config
        (zoom-mode 1))
    #+END_SRC
+
+** Speedbar
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package sr-speedbar
+       :init
+       (setq sr-speedbar-right-side nil)
+       :bind
+       ("C-TAB" . sr-speedbar-toggle))
+   #+END_SRC
+
 * Editing settings
 ** Whitespace be gone!
 
