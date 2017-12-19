@@ -186,7 +186,7 @@ scripts :)
        :init
        (setq sr-speedbar-right-side nil)
        :bind
-       ("C-TAB" . sr-speedbar-toggle))
+       ([C-tab] . sr-speedbar-toggle))
    #+END_SRC
 
 ** Dashboard
