@@ -1,9 +1,7 @@
-*~
-config.el
-custom.el
-elpa
-.python-environments
-ac-comphist.dat
-ido.last
-projectile-bookmarks.eld
-smex-items
+*
+!sensible-defaults.el
+!.gitignore
+!.gitmodules
+!banner.png
+!config.org
+!init.el
