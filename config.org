@@ -452,6 +452,18 @@ scripts :)
        :config (add-hook 'ruby-mode-hook 'rubocop-mode))
    #+END_SRC
 
+** Lua
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package lua-mode)
+   #+END_SRC
+
+** Moonscript
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package moonscript)
+   #+END_SRC
+
 ** C/C++
 
    Just stuff that I use when programming in C. I rarely do C++ (because it sucks,
